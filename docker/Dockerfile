@@ -12,8 +12,11 @@ RUN npm install --legacy-peer-deps || npm install --force
 # Copiar el resto del código
 COPY . .
 
+# Arreglar permisos
+RUN chmod -R 755 /app/node_modules/.bin
+
 # Exponer puerto de Vite
 EXPOSE 3000
 
 # Comando para iniciar servidor de desarrollo
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+CMD ["npm", "run", "dev", "--", "--host"]

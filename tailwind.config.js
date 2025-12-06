@@ -31,6 +31,16 @@ export default {
           psychic: '#F85888',
           dark: '#705848',
           dragon: '#7038F8',
+          fairy: '#EE99AC',
+          ground: '#E0C068',
+          fighting: '#C03028',
+          steel: '#B8B8D0',
+          normal: '#A8A878',
+          poison: '#A040A0',
+          flying: '#A890F0',
+          bug: '#A8B820',
+          rock: '#B8A038',
+          ghost: '#705898',
         }
       },
       animation: {

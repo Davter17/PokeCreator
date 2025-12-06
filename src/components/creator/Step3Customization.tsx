@@ -6,22 +6,38 @@ interface Step3Props {
 }
 
 const types = [
+  { value: 'normal', label: 'Normal' },
   { value: 'fire', label: 'Fuego' },
-  { value: 'water', label: 'Agua' },
+  { value: 'water', label: 'Agagua' },
   { value: 'grass', label: 'Planta' },
   { value: 'electric', label: 'Eléctrico' },
+  { value: 'ice', label: 'Hielo' },
+  { value: 'fighting', label: 'Lucha' },
+  { value: 'poison', label: 'Veneno' },
+  { value: 'ground', label: 'Tierra' },
+  { value: 'flying', label: 'Volador' },
   { value: 'psychic', label: 'Psíquico' },
+  { value: 'bug', label: 'Bicho' },
+  { value: 'rock', label: 'Roca' },
+  { value: 'ghost', label: 'Fantasma' },
+  { value: 'dragon', label: 'Dragón' },
   { value: 'dark', label: 'Siniestro' },
-  { value: 'dragon', label: 'Dragón' }
-]
+  { value: 'steel', label: 'Acero' },
+  { value: 'fairy', label: 'Hada' }
+];
 
 const colors = [
-  { value: 'red', label: 'Rojo', class: 'bg-pokemon-fire' },
-  { value: 'blue', label: 'Azul', class: 'bg-pokemon-water' },
-  { value: 'green', label: 'Verde', class: 'bg-pokemon-grass' },
-  { value: 'yellow', label: 'Amarillo', class: 'bg-pokemon-electric' },
-  { value: 'purple', label: 'Morado', class: 'bg-pokemon-psychic' }
-]
+  { value: 'red', label: 'Rojo', class: 'bg-red-500' },
+  { value: 'blue', label: 'Azul', class: 'bg-blue-500' },
+  { value: 'green', label: 'Verde', class: 'bg-green-500' },
+  { value: 'yellow', label: 'Amarillo', class: 'bg-yellow-400' },
+  { value: 'purple', label: 'Morado', class: 'bg-purple-500' },
+  { value: 'pink', label: 'Rosa', class: 'bg-pink-400' },
+  { value: 'brown', label: 'Marrón', class: 'bg-amber-800' },
+  { value: 'orange', label: 'Naranja', class: 'bg-orange-500' },
+  { value: 'black', label: 'Negro', class: 'bg-neutral-900' },
+  { value: 'gray', label: 'Gris', class: 'bg-gray-500' },
+];
 
 export default function Step3Customization({ pokemonData, setPokemonData }: Step3Props) {
   return (
@@ -63,7 +79,7 @@ export default function Step3Customization({ pokemonData, setPokemonData }: Step
         </div>
 
         <div>
-          <label className="block font-semibold mb-2">Colores Principales</label>
+          <label className="block font-semibold mb-2">Color Principal</label>
           <div className="flex gap-4 flex-wrap">
             {colors.map(color => (
               <div key={color.value} className="relative">

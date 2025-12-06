@@ -6,13 +6,16 @@ interface Step2Props {
 }
 
 const abilities = [
-  { value: 'fire', name: 'Llama Ardiente', icon: '🔥' },
-  { value: 'water', name: 'Hidro Bomba', icon: '💧' },
-  { value: 'electric', name: 'Rayo Eléctrico', icon: '⚡' },
-  { value: 'grass', name: 'Látigo Cepa', icon: '🌿' },
-  { value: 'ice', name: 'Ventisca Polar', icon: '❄️' },
-  { value: 'psychic', name: 'Psíquico', icon: '🔮' }
+  { value: 'levitate', name: 'Levitación', icon: '🪽' },
+  { value: 'lightning-rod', name: 'Pararrayos', icon: '⚡' },
+  { value: 'intimidate', name: 'Intimidación', icon: '😠' },
+  { value: 'overgrow', name: 'Espesura', icon: '🌱' },
+  { value: 'torrent', name: 'Torrente', icon: '💧' },
+  { value: 'swarm', name: 'Enjambre', icon: '🐝' },
+  { value: 'sturdy', name: 'Robustez', icon: '🛡️' },
+  { value: 'chlorophyll', name: 'Clorofila', icon: '🌞' }
 ]
+
 
 export default function Step2AbilitySelection({ pokemonData, setPokemonData }: Step2Props) {
   const handleToggle = (ability: typeof abilities[0]) => {
