@@ -12,6 +12,9 @@ services:
       - ../index.html:/app/index.html
       - ../tailwind.config.js:/app/tailwind.config.js
       - ../vite.config.ts:/app/vite.config.ts
+      - ../.env:/app/.env
+    env_file:
+      - ../.env
     restart: unless-stopped
     networks:
       - pokecreator-network

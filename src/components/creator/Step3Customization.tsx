@@ -8,7 +8,7 @@ interface Step3Props {
 const types = [
   { value: 'normal', label: 'Normal' },
   { value: 'fire', label: 'Fuego' },
-  { value: 'water', label: 'Agagua' },
+  { value: 'water', label: 'Agua' },
   { value: 'grass', label: 'Planta' },
   { value: 'electric', label: 'Eléctrico' },
   { value: 'ice', label: 'Hielo' },

@@ -4,6 +4,8 @@ Aplicación web para crear Pokémon personalizados con IA, usando React, TypeScr
 
 ## 🚀 Características
 
+- ✅ **Autenticación OAuth2 con Google** - Inicio de sesión seguro
+- ✅ **Rutas protegidas** - Acceso controlado a creación y galería
 - ✅ **Generación de imágenes con IA** usando Pollinations.ai
 - ✅ **Creador de Pokémon en 4 pasos**:
   1. Selección de animal base
@@ -15,10 +17,51 @@ Aplicación web para crear Pokémon personalizados con IA, usando React, TypeScr
 - ✅ **Mobile-first responsive design**
 - ✅ **Accesibilidad WCAG 2.1 AA**
 
+## 🔐 OAuth2 - Inicio Rápido
+
+### 1. Tu Client ID ya está configurado ✅
+```
+1096972045606-9qcls5g2qc0ib09fiauenhfmh4ljb2br.apps.googleusercontent.com
+```
+
+### 2. Configurar Google Cloud Console 🔧
+
+**Ve a:** [Google Cloud Console](https://console.cloud.google.com/) > APIs & Services > Credentials
+
+**Agrega estas URIs autorizadas:**
+
+**Authorized JavaScript origins:**
+```
+http://localhost:3000
+http://localhost:5173
+```
+
+**Authorized redirect URIs:**
+```
+http://localhost:3000
+http://localhost:5173
+http://localhost:3000/auth/callback
+http://localhost:5173/auth/callback
+```
+
+### 3. Levantar el proyecto 🚀
+```bash
+make restart
+```
+
+### 4. ¡Listo! 🎉
+Abre http://localhost:3000 y haz clic en "Iniciar Sesión"
+
+**📚 Documentación OAuth2:**
+- [`OAUTH_COMPLETE.md`](OAUTH_COMPLETE.md) - Guía rápida de configuración
+- [`OAUTH_IMPLEMENTATION.md`](OAUTH_IMPLEMENTATION.md) - Implementación completa
+- [`OAUTH_SETUP.md`](OAUTH_SETUP.md) - Configuración detallada
+- [`OAUTH_ERROR_FIX.md`](OAUTH_ERROR_FIX.md) - Solución de errores
+
 ## 📁 Estructura del Proyecto
 
 ```
-ex02/
+ex01/
 ├── docker/                 # Archivos Docker
 │   ├── Dockerfile
 │   ├── docker-compose.yml
@@ -27,25 +70,36 @@ ex02/
 ├── src/
 │   ├── components/         # Componentes React
 │   │   ├── creator/       # Pasos del creador
-│   │   ├── Header.tsx
+│   │   ├── Header.tsx     # Header con auth
 │   │   ├── Footer.tsx
 │   │   ├── Layout.tsx
 │   │   ├── Modal.tsx
-│   │   └── ShareModal.tsx
+│   │   ├── ShareModal.tsx
+│   │   └── ProtectedRoute.tsx  # Protección de rutas
+│   ├── context/           # Context API
+│   │   └── AuthContext.tsx     # Contexto de autenticación
+│   ├── services/          # Servicios
+│   │   └── authService.ts      # Servicio OAuth2
 │   ├── pages/             # Páginas principales
 │   │   ├── Home.tsx
-│   │   ├── Creator.tsx
-│   │   └── Gallery.tsx
+│   │   ├── Login.tsx      # Página de login OAuth2
+│   │   ├── Creator.tsx    # Protegida
+│   │   └── Gallery.tsx    # Protegida
 │   ├── types/             # TypeScript types
+│   │   ├── index.ts
+│   │   └── auth.ts        # Tipos de autenticación
 │   ├── App.tsx
 │   ├── main.tsx
 │   └── index.css
-├── public/                # Assets estáticos
+├── .env                   # Variables de entorno (no commit)
+├── .env.example           # Ejemplo de variables
 ├── index.html
 ├── package.json
 ├── tsconfig.json
 ├── vite.config.ts
-└── tailwind.config.js
+├── tailwind.config.js
+├── Makefile               # Comandos Docker simplificados
+└── OAUTH_*.md             # Documentación OAuth2
 ```
 
 ## 🛠️ Tecnologías
@@ -55,9 +109,46 @@ ex02/
 - **Vite** - Build tool & dev server
 - **TailwindCSS** - Utility-first CSS
 - **React Router** - SPA routing
+- **@react-oauth/google** - Google OAuth2 authentication
 - **Pollinations.ai** - Image generation API
+- **Docker** - Containerization
 
-## 🚀 Desarrollo Local
+## 🚀 Desarrollo con Docker (Recomendado)
+
+### Requisitos
+- Docker
+- Docker Compose
+
+### Comandos Make disponibles
+
+```bash
+make up       # Levantar el proyecto
+make dev      # Levantar con logs visibles
+make down     # Bajar el proyecto
+make restart  # Reiniciar el proyecto
+make install  # Instalar dependencias
+make logs     # Ver logs
+make status   # Ver estado
+make clean    # Limpiar todo
+make help     # Ver ayuda
+```
+
+### Inicio rápido
+
+```bash
+# 1. Configura URIs en Google Cloud Console (ver arriba)
+
+# 2. Levantar el proyecto
+make restart
+
+# 3. Instalar dependencias
+make install
+
+# 4. Abrir en navegador
+# http://localhost:3000
+```
+
+## 💻 Desarrollo Local (sin Docker)
 
 ### Requisitos
 - Node.js 20.x o superior
@@ -67,12 +158,16 @@ ex02/
 
 ```bash
 # Instalar dependencias
-npm install --legacy-peer-deps
+npm install
+
+# Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tu VITE_GOOGLE_CLIENT_ID
 
 # Iniciar servidor de desarrollo
 npm run dev
 
-# La app estará en http://localhost:3000
+# La app estará en http://localhost:5173
 ```
 
 ### Scripts disponibles
@@ -81,19 +176,7 @@ npm run dev
 npm run dev      # Servidor de desarrollo
 npm run build    # Build de producción
 npm run preview  # Preview del build
-```
-
-## 🐳 Docker
-
-Los archivos Docker están organizados en la carpeta `docker/`. Ver [docker/README.md](docker/README.md) para más detalles.
-
-```bash
-# Desde la raíz del proyecto
-docker-compose -f docker/docker-compose.yml up --build
-
-# O desde la carpeta docker/
-cd docker
-docker-compose up --build
+npm run lint     # Linter
 ```
 
 ## 📝 Licencia

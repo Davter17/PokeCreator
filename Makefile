@@ -1,10 +1,16 @@
-.PHONY: up down build restart logs clean help
+.PHONY: up down build restart logs clean help install
 
 # Variables
 DOCKER_COMPOSE = docker-compose -f docker/docker-compose.yml
 
 # Comando por defecto
 all: up
+
+# Instalar dependencias
+install:
+	@echo "📦 Instalando dependencias..."
+	$(DOCKER_COMPOSE) exec web npm install || docker exec pokecreator-web npm install
+	@echo "✅ Dependencias instaladas"
 
 # Levantar el proyecto
 up:
@@ -48,6 +54,7 @@ status:
 # Ayuda
 help:
 	@echo "📖 Comandos disponibles:"
+	@echo "  make install  - Instalar dependencias en el contenedor"
 	@echo "  make up       - Levantar el proyecto en segundo plano"
 	@echo "  make dev      - Levantar el proyecto con logs visibles"
 	@echo "  make down     - Bajar el proyecto"
