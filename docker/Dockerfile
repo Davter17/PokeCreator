@@ -6,6 +6,7 @@ WORKDIR /app
 # Copiar archivos de configuración y dependencias
 COPY package.json package-lock.json* ./
 COPY config/ ./config/
+COPY postcss.config.js tailwind.config.js ./
 
 # Instalar dependencias
 RUN npm install --legacy-peer-deps || npm install --force
