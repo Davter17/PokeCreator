@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { User } from '../types/auth'
+import { authService } from '../services/authService'
 
 interface AuthContextType {
   user: User | null
@@ -29,46 +30,41 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     // Check if user is logged in on mount
-    const storedUser = localStorage.getItem('user')
-    if (storedUser) {
-      setUser(JSON.parse(storedUser))
+    const storedUser = authService.getStoredUser()
+    const storedToken = authService.getStoredToken()
+
+    // Validate both user and token exist and are valid
+    if (storedUser && storedToken) {
+      setUser(storedUser)
+    } else if (storedUser || storedToken) {
+      // If one exists but not the other, clear everything
+      authService.clearAuth()
     }
+    
     setIsLoading(false)
   }, [])
 
   const login = (credential: string) => {
     try {
-      // Decode JWT token
-      const base64Url = credential.split('.')[1]
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split('')
-          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      )
+      // Validate and decode token
+      const userData = authService.decodeToken(credential)
 
-      const decoded = JSON.parse(jsonPayload)
-
-      const userData: User = {
-        id: decoded.sub,
-        email: decoded.email,
-        name: decoded.name,
-        picture: decoded.picture,
+      if (!userData) {
+        console.error('Failed to decode token')
+        return
       }
 
+      // Store user and token
       setUser(userData)
-      localStorage.setItem('user', JSON.stringify(userData))
-      localStorage.setItem('token', credential)
+      authService.storeAuth(userData, credential)
     } catch (error) {
-      console.error('Error decoding token:', error)
+      console.error('Login error:', error instanceof Error ? error.message : 'Unknown error')
     }
   }
 
   const logout = () => {
     setUser(null)
-    localStorage.removeItem('user')
-    localStorage.removeItem('token')
+    authService.clearAuth()
   }
 
   const value: AuthContextType = {

@@ -179,6 +179,37 @@ npm run preview  # Preview del build
 npm run lint     # Linter
 ```
 
-## 📝 Licencia
+## � Seguridad
+
+### Medidas Implementadas
+
+- ✅ **OAuth2 con Google** - Autenticación segura delegada
+- ✅ **JWT Token Validation** - Validación de tokens con expiración
+- ✅ **Protected Routes** - Rutas protegidas por autenticación
+- ✅ **API Keys Protection** - Variables de entorno seguras
+- ✅ **HTTP Security Headers** - CSP, X-Frame-Options, etc.
+- ✅ **Input Validation** - Validación y sanitización de datos
+- ✅ **XSS Protection** - React auto-escaping + CSP
+- ✅ **HTTPS Ready** - Configuración para producción segura
+
+### Documentación de Seguridad
+
+- [`SECURITY.md`](SECURITY.md) - Medidas de seguridad implementadas
+- [`SECURITY_BEST_PRACTICES.md`](SECURITY_BEST_PRACTICES.md) - Guía de mejores prácticas
+
+### Quick Security Check
+
+```bash
+# Verificar que .env no esté en git
+git status
+
+# Verificar headers de seguridad (en producción)
+curl -I https://tu-dominio.com
+
+# Audit de dependencias
+npm audit
+```
+
+## �📝 Licencia
 
 Proyecto educativo - Globant 2025
