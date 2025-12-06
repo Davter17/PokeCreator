@@ -53,51 +53,67 @@ make restart
 Abre http://localhost:3000 y haz clic en "Iniciar Sesión"
 
 **📚 Documentación OAuth2:**
-- [`OAUTH_COMPLETE.md`](OAUTH_COMPLETE.md) - Guía rápida de configuración
-- [`OAUTH_IMPLEMENTATION.md`](OAUTH_IMPLEMENTATION.md) - Implementación completa
-- [`OAUTH_SETUP.md`](OAUTH_SETUP.md) - Configuración detallada
-- [`OAUTH_ERROR_FIX.md`](OAUTH_ERROR_FIX.md) - Solución de errores
+- [`docs/OAUTH_COMPLETE.md`](docs/OAUTH_COMPLETE.md) - Guía rápida de configuración
+- [`docs/OAUTH_IMPLEMENTATION.md`](docs/OAUTH_IMPLEMENTATION.md) - Implementación completa
+- [`docs/OAUTH_SETUP.md`](docs/OAUTH_SETUP.md) - Configuración detallada
+- [`docs/OAUTH_ERROR_FIX.md`](docs/OAUTH_ERROR_FIX.md) - Solución de errores
 
 ## 📁 Estructura del Proyecto
 
 ```
 ex01/
-├── docker/                 # Archivos Docker
+├── config/                # 🔧 Configuraciones
+│   ├── vite.config.ts    # Vite + path aliases
+│   ├── tsconfig.json     # TypeScript
+│   ├── tsconfig.node.json
+│   ├── tailwind.config.js
+│   └── postcss.config.js
+├── docker/                # 🐳 Docker
 │   ├── Dockerfile
 │   ├── docker-compose.yml
 │   ├── nginx.conf
 │   └── README.md
-├── src/
-│   ├── components/         # Componentes React
-│   │   ├── creator/       # Pasos del creador
-│   │   ├── Header.tsx     # Header con auth
+├── docs/                  # 📚 Documentación
+│   ├── OAUTH_*.md        # OAuth2
+│   ├── SECURITY*.md      # Seguridad
+│   ├── PROJECT_*.md      # Proyecto
+│   └── QUICKSTART.md
+├── scripts/               # 🔧 Scripts
+│   ├── setup.sh
+│   └── reorganize-project.sh
+├── src/                   # 💻 Código fuente
+│   ├── components/        # Componentes React
+│   │   ├── creator/      # Pasos del creador
+│   │   ├── Header.tsx    # Header con auth
 │   │   ├── Footer.tsx
 │   │   ├── Layout.tsx
 │   │   ├── Modal.tsx
 │   │   ├── ShareModal.tsx
-│   │   └── ProtectedRoute.tsx  # Protección de rutas
-│   ├── context/           # Context API
-│   │   └── AuthContext.tsx     # Contexto de autenticación
-│   ├── services/          # Servicios
-│   │   └── authService.ts      # Servicio OAuth2
-│   ├── pages/             # Páginas principales
+│   │   └── ProtectedRoute.tsx
+│   ├── context/          # Context API
+│   │   └── AuthContext.tsx
+│   ├── services/         # Servicios
+│   │   └── authService.ts
+│   ├── pages/            # Páginas principales
 │   │   ├── Home.tsx
-│   │   ├── Login.tsx      # Página de login OAuth2
-│   │   ├── Creator.tsx    # Protegida
-│   │   └── Gallery.tsx    # Protegida
-│   ├── types/             # TypeScript types
+│   │   ├── Login.tsx
+│   │   ├── Creator.tsx   # Protegida
+│   │   └── Gallery.tsx   # Protegida
+│   ├── types/            # TypeScript types
 │   │   ├── index.ts
-│   │   └── auth.ts        # Tipos de autenticación
+│   │   └── auth.ts
+│   ├── utils/            # Utilidades
+│   │   └── security.ts
 │   ├── App.tsx
 │   ├── main.tsx
 │   └── index.css
-├── .env                   # Variables de entorno (no commit)
-├── .env.example           # Ejemplo de variables
+├── public/                # 🖼️ Assets públicos
+├── .env                   # Variables (no commit)
+├── .env.example          # Plantilla
 ├── index.html
 ├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── tailwind.config.js
+├── Makefile
+└── README.md
 ├── Makefile               # Comandos Docker simplificados
 └── OAUTH_*.md             # Documentación OAuth2
 ```

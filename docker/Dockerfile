@@ -3,14 +3,18 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copiar package.json
-COPY package.json ./
+# Copiar archivos de configuración y dependencias
+COPY package.json package-lock.json* ./
+COPY config/ ./config/
 
 # Instalar dependencias
 RUN npm install --legacy-peer-deps || npm install --force
 
 # Copiar el resto del código
-COPY . .
+COPY src/ ./src/
+COPY public/ ./public/
+COPY index.html ./
+COPY .env* ./
 
 # Arreglar permisos
 RUN chmod -R 755 /app/node_modules/.bin

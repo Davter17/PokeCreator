@@ -1,9 +1,25 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { fileURLToPath } from 'url'
+import { dirname, resolve } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, '../src'),
+      '@components': resolve(__dirname, '../src/components'),
+      '@pages': resolve(__dirname, '../src/pages'),
+      '@services': resolve(__dirname, '../src/services'),
+      '@context': resolve(__dirname, '../src/context'),
+      '@types': resolve(__dirname, '../src/types'),
+      '@utils': resolve(__dirname, '../src/utils'),
+    },
+  },
   server: {
     host: true,
     port: 3000,
@@ -16,6 +32,7 @@ export default defineConfig({
     }
   },
   build: {
+    outDir: '../dist',
     // Security: Don't include sourcemaps in production
     sourcemap: false,
     // Minify for production
