@@ -21,8 +21,10 @@ export const SECURITY_CONFIG = {
   // Input validation
   MAX_LENGTHS: {
     POKEMON_NAME: 20,
+    POKEMON_CONCEPT: 20,
     POKEMON_DESCRIPTION: 200,
-    MAX_ABILITIES: 3
+    MIN_TYPES: 1,
+    MAX_TYPES: 2
   },
 
   // Session
@@ -50,6 +52,13 @@ export const sanitizeInput = (input: string): string => {
     .replace(/<[^>]*>/g, '') // Remove HTML tags
     .trim()
     .slice(0, 500) // Max length as safety
+}
+
+// Validate Pokemon concept (max 20 chars, no spaces)
+export const validateConcept = (concept: string): boolean => {
+  if (!concept || concept.length === 0) return false
+  if (concept.length > SECURITY_CONFIG.MAX_LENGTHS.POKEMON_CONCEPT) return false
+  return !/\s/.test(concept)
 }
 
 // Validate Pokemon name

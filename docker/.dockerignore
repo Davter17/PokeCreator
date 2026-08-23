@@ -4,19 +4,20 @@
 
 # Docker
 docker-compose.yml
+docker-compose.prod.yml
 .dockerignore
 
 # Documentation
-README.md
+docs/
+*.md
 
-# Node modules
+# Node modules (rebuilt in image)
 node_modules
 npm-debug.log
-package-lock.json
 
-# Environment files
-.env
+# Environment files (provided at runtime)
 .env.local
+.env.production.local
 
 # IDE
 .vscode
@@ -33,7 +34,6 @@ Thumbs.db
 dist
 build
 
-# Old files
-index_old.html
-app.js
-styles.css
+# Scripts (not needed in image)
+scripts/
+Makefile

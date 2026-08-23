@@ -1,4 +1,4 @@
-import { User } from '../types/auth'
+import { User } from '@/types/auth'
 
 export const authService = {
   // Decode and validate Google JWT token

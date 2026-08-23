@@ -2,7 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
-import { AuthProvider } from './context/AuthContext'
+import { AuthProvider } from '@/context/AuthContext'
+import { DialogProvider } from '@/context/DialogContext'
 import App from './App.tsx'
 import './index.css'
 
@@ -13,13 +14,13 @@ if (!clientId) {
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <GoogleOAuthProvider clientId={clientId}>
-      <BrowserRouter>
-        <AuthProvider>
+  <GoogleOAuthProvider clientId={clientId}>
+    <BrowserRouter>
+      <AuthProvider>
+        <DialogProvider>
           <App />
-        </AuthProvider>
-      </BrowserRouter>
-    </GoogleOAuthProvider>
-  </React.StrictMode>,
+        </DialogProvider>
+      </AuthProvider>
+    </BrowserRouter>
+  </GoogleOAuthProvider>,
 )

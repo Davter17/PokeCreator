@@ -31,21 +31,21 @@
 
 
 ```
-ex01/
-├── 📁 config/              # Configuraciones
+pokecreator/
+├── config/              # Configuraciones
 │   ├── vite.config.ts     # Vite
 │   ├── tsconfig.json      # TypeScript
 │   ├── tailwind.config.js # TailwindCSS
 │   └── postcss.config.js  # PostCSS
 │
-├── 🐳 docker/              # Docker
+├── docker/              # Docker
 │   ├── Dockerfile
 │   └── docker-compose.yml
 │
-├── 📚 docs/                # Documentación
+├── docs/                # Documentación
 │   └── GUIA_COMPLETA_PROYECTO.md
 │
-├── ⚛️ src/                 # Código fuente
+├── src/                 # Código fuente
 │   ├── components/        # Componentes React
 │   ├── context/           # Estado global
 │   ├── pages/             # Páginas

@@ -1,4 +1,5 @@
-import Modal from './Modal'
+import Modal from '@/components/Modal'
+import { useDialog } from '@/context/DialogContext'
 
 interface ShareModalProps {
   isOpen: boolean
@@ -8,11 +9,12 @@ interface ShareModalProps {
 }
 
 export default function ShareModal({ isOpen, onClose, pokemonName, imageUrl }: ShareModalProps) {
+  const { alert } = useDialog()
   const shareUrl = imageUrl || window.location.href
 
-  const copyToClipboard = () => {
+  const copyToClipboard = async () => {
     navigator.clipboard.writeText(shareUrl)
-    alert('¡Link copiado al portapapeles!')
+    await alert('¡Link copiado al portapapeles!', 'Copiado')
   }
 
   const shareOnWhatsApp = () => {
@@ -31,7 +33,7 @@ export default function ShareModal({ isOpen, onClose, pokemonName, imageUrl }: S
 
   const downloadImage = async () => {
     if (!imageUrl) {
-      alert('La imagen aún no está lista')
+      await alert('La imagen aún no está lista')
       return
     }
 

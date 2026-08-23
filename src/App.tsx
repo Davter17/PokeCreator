@@ -1,10 +1,11 @@
 import { Routes, Route } from 'react-router-dom'
-import Layout from './components/Layout'
-import ProtectedRoute from './components/ProtectedRoute'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Creator from './pages/Creator'
-import Gallery from './pages/Gallery'
+import Layout from '@/components/Layout'
+import ProtectedRoute from '@/components/ProtectedRoute'
+import Home from '@/pages/Home'
+import Login from '@/pages/Login'
+import Creator from '@/pages/Creator'
+import Gallery from '@/pages/Gallery'
+import NotFound from '@/pages/NotFound'
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   )

@@ -1,9 +1,9 @@
 services:
-  # Servicio web frontend con React + Vite (Desarrollo)
   web:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+      target: dev
     container_name: pokecreator-web
     ports:
       - "3000:3000"
@@ -11,7 +11,7 @@ services:
       - ../src:/app/src
       - ../index.html:/app/index.html
       - ../tailwind.config.js:/app/tailwind.config.js
-      - ../vite.config.ts:/app/vite.config.ts
+      - ../config/vite.config.ts:/app/config/vite.config.ts
       - ../.env:/app/.env
     env_file:
       - ../.env

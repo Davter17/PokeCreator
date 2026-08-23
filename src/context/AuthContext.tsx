@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { User } from '../types/auth'
-import { authService } from '../services/authService'
+import { User } from '@/types/auth'
+import { authService } from '@/services/authService'
 
 interface AuthContextType {
   user: User | null
@@ -29,24 +29,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check if user is logged in on mount
     const storedUser = authService.getStoredUser()
     const storedToken = authService.getStoredToken()
 
-    // Validate both user and token exist and are valid
     if (storedUser && storedToken) {
       setUser(storedUser)
     } else if (storedUser || storedToken) {
-      // If one exists but not the other, clear everything
       authService.clearAuth()
     }
-    
+
     setIsLoading(false)
   }, [])
 
   const login = (credential: string) => {
     try {
-      // Validate and decode token
       const userData = authService.decodeToken(credential)
 
       if (!userData) {
@@ -54,7 +50,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return
       }
 
-      // Store user and token
       setUser(userData)
       authService.storeAuth(userData, credential)
     } catch (error) {
@@ -67,9 +62,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     authService.clearAuth()
   }
 
+  const isAuthenticated = !!user
+
+  useEffect(() => {
+    if (!isAuthenticated) return
+
+    const checkTokenExpiry = () => {
+      const token = authService.getStoredToken()
+      if (!token) {
+        logout()
+      }
+    }
+
+    const interval = setInterval(checkTokenExpiry, 60000)
+    return () => clearInterval(interval)
+  }, [isAuthenticated])
+
   const value: AuthContextType = {
     user,
-    isAuthenticated: !!user,
+    isAuthenticated,
     login,
     logout,
     isLoading,

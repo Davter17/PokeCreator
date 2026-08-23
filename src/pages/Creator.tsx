@@ -1,49 +1,55 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import type { PokemonData } from '../types'
-import ProgressBar from '../components/creator/ProgressBar'
-import Step1AnimalSelection from '../components/creator/Step1AnimalSelection'
-import Step2AbilitySelection from '../components/creator/Step2AbilitySelection'
-import Step3Customization from '../components/creator/Step3Customization'
-import Step4Result from '../components/creator/Step4Result'
+import { useNavigate, useLocation } from 'react-router-dom'
+import type { PokemonData } from '@/types'
+import { validateConcept, validatePokemonName, validateDescription, SECURITY_CONFIG } from '@/utils/security'
+import { useDialog } from '@/context/DialogContext'
+import ProgressBar from '@/components/creator/ProgressBar'
+import Step1Concept from '@/components/creator/Step1Concept'
+import Step3Customization from '@/components/creator/Step3Customization'
+import Step4Result from '@/components/creator/Step4Result'
+
+const TOTAL_STEPS = 2
 
 export default function Creator() {
   const navigate = useNavigate()
-  const [currentStep, setCurrentStep] = useState(0)
-  const [pokemonData, setPokemonData] = useState<PokemonData>({
-    animal: null,
-    abilities: [],
+  const location = useLocation()
+  const { alert } = useDialog()
+  const initialState = (location.state as { random?: boolean; pokemonData?: PokemonData } | null)?.pokemonData
+  const [currentStep, setCurrentStep] = useState(initialState ? 2 : 0)
+  const [pokemonData, setPokemonData] = useState<PokemonData>(initialState || {
+    concept: '',
+    types: [],
     name: '',
-    type: '',
-    color: '',
+    primaryColor: '#3B4CCA',
+    secondaryColor: '#FF5350',
     description: ''
   })
 
   const validateStep = (step: number): boolean => {
     switch(step) {
       case 0:
-        return pokemonData.animal !== null
+        return validateConcept(pokemonData.concept)
       case 1:
-        return pokemonData.abilities.length > 0
-      case 2:
-        return pokemonData.name.trim() !== '' && pokemonData.type !== ''
+        return validatePokemonName(pokemonData.name)
+          && pokemonData.types.length >= SECURITY_CONFIG.MAX_LENGTHS.MIN_TYPES
+          && pokemonData.types.length <= SECURITY_CONFIG.MAX_LENGTHS.MAX_TYPES
+          && validateDescription(pokemonData.description || 'placeholder')
       default:
         return true
     }
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!validateStep(currentStep)) {
       const messages = [
-        'Por favor, selecciona un animal base',
-        'Selecciona al menos una habilidad',
-        'Completa el nombre y tipo de tu Pokémon'
+        'Escribe un concepto base válido (sin espacios, máx. 20 caracteres)',
+        'Completa el nombre y selecciona 1 o 2 tipos'
       ]
-      alert(messages[currentStep])
+      await alert(messages[currentStep])
       return
     }
 
-    if (currentStep < 3) {
+    if (currentStep < TOTAL_STEPS) {
       setCurrentStep(currentStep + 1)
     }
   }
@@ -54,7 +60,7 @@ export default function Creator() {
     }
   }
 
-  const handleSave = (imageUrl: string) => {
+  const handleSave = async (imageUrl: string) => {
     const savedPokemons = JSON.parse(localStorage.getItem('savedPokemons') || '[]')
     savedPokemons.push({
       ...pokemonData,
@@ -63,17 +69,17 @@ export default function Creator() {
       createdAt: new Date().toISOString()
     })
     localStorage.setItem('savedPokemons', JSON.stringify(savedPokemons))
-    alert('¡Pokémon guardado exitosamente!')
+    await alert('¡Pokémon guardado exitosamente!', '¡Listo!')
     navigate('/gallery')
   }
 
   const handleReset = () => {
     setPokemonData({
-      animal: null,
-      abilities: [],
+      concept: '',
+      types: [],
       name: '',
-      type: '',
-      color: '',
+      primaryColor: '#3B4CCA',
+      secondaryColor: '#FF5350',
       description: ''
     })
     setCurrentStep(0)
@@ -83,32 +89,25 @@ export default function Creator() {
     <section className="max-w-5xl mx-auto px-4 lg:px-8 py-12">
       <div className="bg-white rounded-2xl p-6 lg:p-12 shadow-lg">
         <h2 className="text-3xl font-bold text-primary mb-8 text-center">Diseña tu Pokémon</h2>
-        
+
         <ProgressBar currentStep={currentStep} />
 
         <div className="mt-8">
           {currentStep === 0 && (
-            <Step1AnimalSelection
+            <Step1Concept
               pokemonData={pokemonData}
               setPokemonData={setPokemonData}
             />
           )}
-          
+
           {currentStep === 1 && (
-            <Step2AbilitySelection
-              pokemonData={pokemonData}
-              setPokemonData={setPokemonData}
-            />
-          )}
-          
-          {currentStep === 2 && (
             <Step3Customization
               pokemonData={pokemonData}
               setPokemonData={setPokemonData}
             />
           )}
-          
-          {currentStep === 3 && (
+
+          {currentStep === 2 && (
             <Step4Result
               pokemonData={pokemonData}
               onSave={handleSave}
@@ -117,7 +116,7 @@ export default function Creator() {
           )}
         </div>
 
-        {currentStep < 3 && (
+        {currentStep < TOTAL_STEPS && (
           <div className="flex justify-between mt-8 pt-8 border-t border-gray-200">
             <button
               onClick={handlePrev}
@@ -129,7 +128,7 @@ export default function Creator() {
               onClick={handleNext}
               className="btn btn-primary"
             >
-              {currentStep === 2 ? 'Finalizar' : 'Siguiente →'}
+              {currentStep === 1 ? 'Finalizar' : 'Siguiente →'}
             </button>
           </div>
         )}
